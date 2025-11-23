@@ -90,6 +90,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'car_site.urls'
@@ -155,13 +156,23 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # For development
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')    # For production
+STATIC_URL = '/static/'
+
+# Source static files in your app folder (Inferno_Motors/static)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'Inferno_Motors', 'static'),
+]
+
+# Where collectstatic will copy files for serving in production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Use whitenoise to serve static files in production (Render)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Media (user-uploaded) files (unchanged)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
