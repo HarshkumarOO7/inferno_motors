@@ -163,9 +163,7 @@ STATIC_URL = '/static/'
 
 # Source static files in your app folder (Inferno_Motors/static)
 # This points Django's staticfiles finders to your app-level static directory.
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'Inferno_Motors', 'static'),
-]
+STATICFILES_DIRS = [ BASE_DIR / 'Inferno_Motors' / 'static' ]
 
 # Where collectstatic will copy files for production serving
 STATIC_ROOT = BASE_DIR/'staticfiles'
