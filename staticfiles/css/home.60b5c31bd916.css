@@ -1,0 +1,403 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #222;
+    color: #fff;
+    line-height: 1.6;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #111;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #f39c12;
+    transition: text-shadow 0.3s;
+}
+
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar .nav-links li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+}
+
+.navbar .nav-links li a:hover {
+    color: #f39c12;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 100px 20px;
+    background: linear-gradient(45deg, #f39c12, #e74c3c);
+    min-height: 100vh;
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-top: 10px;
+    color: #fff;
+    animation: fadeIn 2s ease-in-out 1s;
+}
+
+.hero .hero-image img {
+    max-width: 500rem;
+    border-radius: 10px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+    animation: slideIn 2s ease-out;
+}
+
+/* About Section */
+.about {
+    padding: 50px 20px;
+    background-color: #333;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 36px;
+    color: #f39c12;
+    margin-bottom: 40px;
+}
+
+.about-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.about-item {
+    background-color: #444;
+    border-radius: 10px;
+    padding: 20px;
+    width: 30%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.about-item i {
+    font-size: 40px;
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+/* Dealership Section */
+.dealership {
+    padding: 50px 20px;
+    background-color: #222;
+    text-align: center;
+}
+
+.dealership h2 {
+    font-size: 36px;
+    color: #f39c12;
+    margin-bottom: 40px;
+}
+
+.dealership-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.dealership-item {
+    background-color: #444;
+    border-radius: 10px;
+    padding: 20px;
+    width: 30%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dealership-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.dealership-item img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* Services Section */
+.services {
+    padding: 50px 20px;
+    background-color: #333;
+    text-align: center;
+}
+
+.services h2 {
+    font-size: 36px;
+    color: #f39c12;
+    margin-bottom: 40px;
+}
+
+.service-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.service-item {
+    background-color: #444;
+    border-radius: 10px;
+    padding: 20px;
+    width: 30%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.service-item img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* Contact Section */
+.contact {
+    padding: 50px 20px;
+    background-color: #222;
+    text-align: center;
+}
+
+.contact h2 {
+    font-size: 36px;
+    color: #f39c12;
+    margin-bottom: 40px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.contact-form input, .contact-form textarea {
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+}
+
+.contact-form button {
+    padding: 10px;
+    background-color: #f39c12;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.contact-form button:hover {
+    background-color: #e67e22;
+}
+
+/* Footer */
+.footer {
+    background-color: #111;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.footer .footer-content {
+    font-size: 14px;
+    color: #bbb;
+}
+
+.footer ul {
+    list-style: none;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.footer ul li a {
+    color: #f39c12;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.footer ul li a:hover {
+    color: #fff;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Services Boxes Section */
+.services-boxes {
+    padding: 50px 20px;
+    background-color: #333;
+    text-align: center;
+}
+
+.services-boxes h2 {
+    font-size: 36px;
+    color: #f39c12;
+    margin-bottom: 40px;
+}
+
+.services-boxes-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.service-box {
+    background-color: #444;
+    border-radius: 10px;
+    padding: 20px;
+    width: 30%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.service-box i {
+    font-size: 40px;
+    color: #f39c12;
+    margin-bottom: 10px;
+}
+
+.service-box h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.service-box p {
+    font-size: 16px;
+    color: #bbb;
+}
+
+/* Link Styling for Service Box */
+.service-box-link {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit text color */
+    display: block; /* Make the link cover the entire box */
+}
+
+.service-box-link:hover .service-box {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+/* Car Parts Search Section */
+.car-parts-search {
+    padding: 50px 20px;
+    background-color: #222;
+    text-align: center;
+}
+
+.car-parts-search h2 {
+    font-size: 36px;
+    color: #f39c12;
+    margin-bottom: 20px;
+}
+
+.car-parts-search p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.search-bars {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+    max-width: 1000px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.search-bars select, .search-bars button {
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    width: 200px;
+}
+
+.search-bars button {
+    background-color: #f39c12;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.search-bars button:hover {
+    background-color: #e67e22;
+}

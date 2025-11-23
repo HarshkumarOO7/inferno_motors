@@ -82,6 +82,7 @@ LOGOUT_REDIRECT_URL = 'home'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -90,7 +91,6 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'car_site.urls'
@@ -162,19 +162,23 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Source static files in your app folder (Inferno_Motors/static)
+# This points Django's staticfiles finders to your app-level static directory.
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'Inferno_Motors', 'static'),
 ]
 
-# Where collectstatic will copy files for serving in production
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Where collectstatic will copy files for production serving
+STATIC_ROOT = BASE_DIR/'staticfiles'
 
-# Use whitenoise to serve static files in production (Render)
+# Use Whitenoise manifest storage in production for compressed, cache-friendly files.
+# If you encounter "missing file" errors during collectstatic, temporarily
+# switch to 'whitenoise.storage.CompressedStaticFilesStorage' while debugging.
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media (user-uploaded) files (unchanged)
+# Media (user-uploaded) files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
