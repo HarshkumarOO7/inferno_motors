@@ -173,7 +173,8 @@ STATIC_ROOT = BASE_DIR/'staticfiles'
 # Use Whitenoise manifest storage in production for compressed, cache-friendly files.
 # If you encounter "missing file" errors during collectstatic, temporarily
 # switch to 'whitenoise.storage.CompressedStaticFilesStorage' while debugging.
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+
 
 # Media (user-uploaded) files
 MEDIA_URL = '/media/'
