@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inferno Motors - My Listings</title>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/my_listings.css' %}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="logo">Inferno Motors</a>
+        <ul class="nav-links">
+            {% if request.session.name %}
+            <li><a href="{% url 'car_listings' %}" class="nav-link">Browse Cars</a></li>
+            <li><a href="{% url 'sell_car' %}" class="nav-link">Sell Your Car</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Sign In</a></li>
+            {% endif %}
+            <li><a href="{% url 'home' %}#about">About Us</a></li>
+            <li><a href="{% url 'home' %}#dealership">Dealership</a></li>
+            <li><a href="{% url 'home' %}#services">Services</a></li>
+            <li><a href="{% url 'home' %}#contact">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- My Listings Hero Section -->
+    <section class="sell-hero">
+        <div class="hero-content">
+            <h1 class="fade-in">My <span>Listings</span></h1>
+            <p class="glow-text">Manage your car listings on Inferno Motors</p>
+        </div>
+    </section>
+
+    <!-- Listings Section -->
+    <section class="listings-section">
+        <div class="listings-container">
+            {% if listings %}
+                <div class="listings-grid">
+                    {% for listing in listings %}
+                    <div class="listing-card">
+                        {% if listing.images.first %}
+                        <div class="listing-image">
+                            <img src="{{ listing.images.first.image.url }}" alt="{{ listing.car_make }} {{ listing.car_model }}">
+                        </div>
+                        {% endif %}
+                        <div class="listing-details">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                <h3>{{ listing.car_year }} {{ listing.car_make }} {{ listing.car_model }}</h3>
+                                <span class="status-badge {% if listing.is_sold %}status-sold{% else %}status-active{% endif %}">
+                                    {% if listing.is_sold %}Sold{% else %}Active{% endif %}
+                                </span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                                <div>
+                                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Mileage</p>
+                                    <p>{{ listing.car_mileage }} km</p>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Price</p>
+                                    <p>₹{{ listing.car_price }}</p>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Transmission</p>
+                                    <p>{{ listing.get_car_transmission_display }}</p>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.9rem; color: var(--text-secondary);">Fuel Type</p>
+                                    <p>{{ listing.get_car_fuel_type_display }}</p>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+                                <a href="{% url 'car_detail' listing.id %}" class="btn btn-primary">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                                <a href="{% url 'edit_listing' listing.id %}" class="btn btn-secondary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-car"></i>
+                    <h3>No Listings Found</h3>
+                    <p>You haven't listed any cars for sale yet.</p>
+                    <a href="{% url 'sell_car' %}" class="btn btn-primary pulse">
+                        <i class="fas fa-plus"></i> List Your Car Now
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Company Name: Inferno Motors</p>
+            <p>Email: support@infernomotors.com</p>
+            <p>Mobile: +91 9876543210</p>
+            <ul>
+                <li><a href="{% url 'home' %}#contact">Contact Us</a></li>
+                <li><a href="{% url 'home' %}#about">About Us</a></li>
+                <li><a href="{% url 'home' %}#services">Services</a></li>
+                <li><a href="{% url 'home' %}#dealership">Dealership</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/my_listings.js' %}"></script>
+</body>
+</html>

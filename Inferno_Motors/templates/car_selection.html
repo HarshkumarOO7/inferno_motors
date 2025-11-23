@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Parts Selection - Inferno Motors</title>
+    <link rel="stylesheet" href="{% static 'css/car_styles.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Inferno Motors</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Car Selection Section -->
+    <section class="car-selection">
+        <h1>Select Your Car Parts</h1>
+        <p>Choose your car company, model, and part to find the perfect fit for your vehicle.</p>
+
+        <!-- Company Dropdown -->
+        <div class="dropdown-container">
+            <div class="dropdown-selected" id="company-selected" onclick="toggleDropdown('company-options')">
+                <span>Select Company</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-options" id="company-options">
+                {% for company in companies %}
+                <div onclick="selectCompany('{{ company.id }}', '{{ company.name }}', '{{ company.image.url }}')">
+                    <img src="{{ company.image.url }}" alt="{{ company.name }}">
+                    <span>{{ company.name }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Model Dropdown -->
+        <div id="model-section" style="display: none;">
+            <h2>Select a Car Model</h2>
+            <div class="dropdown-container">
+                <div class="dropdown-selected" id="model-selected" onclick="toggleDropdown('model-options')">
+                    <span>Select Model</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-options" id="model-options"></div>
+            </div>
+        </div>
+
+        <!-- Parts Dropdown -->
+        <div id="parts-section" style="display: none;">
+            <h2>Select a Car Part</h2>
+            <div class="dropdown-container">
+                <div class="dropdown-selected" id="parts-selected" onclick="toggleDropdown('parts-options')">
+                    <span>Select Part</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="dropdown-options" id="parts-options"></div>
+            </div>
+        </div>
+<div id="buy-now-section" style="display: none;">
+        <button id="buy-now-button" onclick="redirectToCheckout()">Buy Now</button>
+    </div>
+
+<script>
+    function redirectToCheckout() {
+        if (selectedCompany && selectedModel && selectedPart) {
+            window.location.href = `/checkout/?company_id=${selectedCompany.id}&model_id=${selectedModel.id}&part_id=${selectedPart.id}`;
+        } else {
+            alert("Please select a company, model, and part before purchasing.");
+        }
+    }
+</script>
+        <!-- Buy Now Button -->
+        <div id="buy-now-section" style="display: none;">
+            <button id="buy-now-button" onclick="buyNow()">Buy Now</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2023 Inferno Motors. All rights reserved.</p>
+            <ul>
+                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Services</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/car_script.js' %}"></script>
+</body>
+</html>

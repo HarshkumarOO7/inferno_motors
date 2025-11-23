@@ -1,0 +1,285 @@
+{% extends "base.html" %}  <!-- Assuming your base template is named base.html -->
+
+{% block title %}My Purchases | Inferno Motors{% endblock %}
+
+{% block content %}
+<div class="purchases-container">
+    <div class="container">
+        <h1 class="page-title">My Purchases</h1>
+
+        {% if purchases %}
+            <div class="purchases-grid">
+                {% for purchase in purchases %}
+                <div class="purchase-card">
+                    <div class="purchase-header">
+                        <span class="status-badge {{ purchase.status }}">
+                            {{ purchase.get_status_display }}
+                        </span>
+                        <span class="purchase-date">
+                            Purchased on {{ purchase.created_at|date:"M d, Y" }}
+                        </span>
+                    </div>
+
+                    <div class="purchase-details">
+                        <div class="car-image">
+                            {% with primary_image=purchase.car.images.filter(is_primary=True).first %}
+                                {% if primary_image %}
+                                    <img src="{{ primary_image.image.url }}" alt="{{ purchase.car }}">
+                                {% else %}
+                                    <img src="{% static 'img/car-placeholder.jpg' %}" alt="No image available">
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+
+                        <div class="car-info">
+                            <h3>{{ purchase.car.year }} {{ purchase.car.make }} {{ purchase.car.model }}</h3>
+                            <div class="car-specs">
+                                <span><i class="fas fa-tachometer-alt"></i> {{ purchase.car.mileage }} km</span>
+                                <span><i class="fas fa-gas-pump"></i> {{ purchase.car.get_fuel_type_display }}</span>
+                                <span><i class="fas fa-cog"></i> {{ purchase.car.get_transmission_display }}</span>
+                            </div>
+                            <div class="price-details">
+                                <div class="original-price">
+                                    <span>Listed Price:</span>
+                                    <span>₹{{ purchase.car.price }}</span>
+                                </div>
+                                <div class="purchase-price">
+                                    <span>Your Price:</span>
+                                    <span>₹{{ purchase.offer_price|default:purchase.car.price }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="purchase-actions">
+                        <a href="{% url 'car_detail' purchase.car.id %}" class="btn view-details">
+                            <i class="fas fa-eye"></i> View Details
+                        </a>
+                        {% if purchase.status == 'accepted' %}
+                        <button class="btn complete-purchase" data-purchase-id="{{ purchase.id }}">
+                            <i class="fas fa-check-circle"></i> Mark as Completed
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-shopping-cart fa-3x"></i>
+                <h3>No purchases yet</h3>
+                <p>You haven't purchased any cars yet. Browse our <a href="{% url 'car_listings' %}">listings</a> to find your dream car!</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .purchases-container {
+        padding: 2rem 0;
+    }
+
+    .page-title {
+        margin-bottom: 2rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .purchases-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .purchase-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: transform 0.2s;
+    }
+
+    .purchase-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .purchase-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-bottom: 1px solid #eee;
+    }
+
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .status-badge.accepted {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-badge.completed {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .purchase-date {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+
+    .purchase-details {
+        display: flex;
+        padding: 1.5rem;
+    }
+
+    .car-image {
+        width: 200px;
+        height: 150px;
+        margin-right: 1.5rem;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .car-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .car-info {
+        flex: 1;
+    }
+
+    .car-info h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.25rem;
+    }
+
+    .car-specs {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 1rem;
+        color: #6c757d;
+    }
+
+    .car-specs span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .price-details {
+        margin-top: 1rem;
+    }
+
+    .price-details div {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .original-price {
+        color: #6c757d;
+        text-decoration: line-through;
+    }
+
+    .purchase-price {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .purchase-actions {
+        display: flex;
+        justify-content: flex-end;
+        padding: 1rem;
+        border-top: 1px solid #eee;
+        gap: 1rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .empty-state i {
+        color: #6c757d;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .empty-state p {
+        color: #6c757d;
+    }
+
+    .empty-state a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .empty-state a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Handle mark as completed action
+    $('.complete-purchase').click(function() {
+        const purchaseId = $(this).data('purchase-id');
+        const button = $(this);
+
+        $.ajax({
+            url: '/update_purchase_status/',
+            method: 'POST',
+            data: {
+                purchase_id: purchaseId,
+                new_status: 'completed',
+                csrfmiddlewaretoken: csrfToken
+            },
+            beforeSend: function() {
+                button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Processing');
+            },
+            success: function(response) {
+                if(response.success) {
+                    // Update the UI
+                    button.closest('.purchase-card').find('.status-badge')
+                        .removeClass('accepted')
+                        .addClass('completed')
+                        .text('Completed');
+
+                    button.remove();
+
+                    // Show success message
+                    alert('Purchase marked as completed successfully!');
+                } else {
+                    alert(response.message || 'Error updating status');
+                    button.prop('disabled', false).html('<i class="fas fa-check-circle"></i> Mark as Completed');
+                }
+            },
+            error: function() {
+                alert('An error occurred. Please try again.');
+                button.prop('disabled', false).html('<i class="fas fa-check-circle"></i> Mark as Completed');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="purchase-container">
+    <h1>Purchase Request</h1>
+
+    <div class="car-info">
+        <img src="{{ primary_image.image.url }}" alt="{{ car.make }} {{ car.model }}">
+        <h2>{{ car.year }} {{ car.make }} {{ car.model }}</h2>
+        <p>Price: ₹{{ car.price }}</p>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" value="{{ user.name }}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Your Email</label>
+            <input type="email" value="{{ user.email }}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" name="phone" value="{{ user.contact }}" required>
+        </div>
+        <div class="form-group">
+            <label>Offer Price (₹)</label>
+            <input type="number" name="offer_price" value="{{ car.price }}" min="{{ car.price|multiply:0.7 }}" required>
+        </div>
+        <div class="form-group">
+            <label>Message (Optional)</label>
+            <textarea name="message"></textarea>
+        </div>
+        <button type="submit">Submit Request</button>
+    </form>
+</div>
+{% endblock %}

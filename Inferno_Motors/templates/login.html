@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load socialaccount %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inferno Motors - Login & Signup</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Inferno Motors</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Feedback</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Section -->
+    <main>
+        <div class="card" id="card">
+            <!-- Login Form -->
+            <div class="card-front">
+                <h2>Login</h2>
+                <form method="POST" action="{% url 'login' %}" id="loginForm">
+                    {% csrf_token %}
+                    <input type="email" placeholder="Email ID" name="email" required>
+                    <input type="password" placeholder="Password" name="password" required>
+                    <button type="submit">Login</button>
+                </form>
+                <p>Don't have an account? <a href="#" id="flipToSignup">Sign Up</a></p>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="card-back">
+                <h2>Sign Up</h2>
+                    <form method="POST" action="{% url 'signup' %}" id="signupForm">
+            {% csrf_token %}
+                    <input type="email" placeholder="Email" name="email" required>
+                    <input type="text" placeholder="Full Name" name="name" required>
+                    <input type="tel" placeholder="Mobile No" name="contact" required>
+                    <input type="password" placeholder="Password" name="password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p>Or log in with:</p>
+                <a href="{% provider_login_url 'google' %}">Login with Google</a>
+                <p>Already have an account? <a href="#" id="flipToLogin">Login</a></p>
+            </div>
+        </div>
+    </main>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <script src="{% static 'js/login.js' %}"></script>
+</body>
+</html>

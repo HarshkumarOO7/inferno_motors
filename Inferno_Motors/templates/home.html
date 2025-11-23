@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inferno Motors - Home</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+   <style>
+    .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+    .popup-content {
+        text-align: center;
+    }
+    .close-popup {
+        float: right;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Inferno Motors</div>
+        <ul class="nav-links">
+            {% if request.session.name %}
+            <!-- Show Sign Out if user is logged in -->
+            <li><a href="{% url 'signout' %}">Sign Out</a></li>
+            {% else %}
+            <!-- Show Sign In and Sign Up if user is not logged in -->
+            <li><a href="{% url 'login' %}">Sign In</a></li>
+            {% endif %}
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#dealership">Dealership</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="fade-in">Welcome to <span>Inferno Motors</span></h1>
+            {% if request.session.name %}
+            <h1>{{ name }}!</h1>
+            {% endif %}
+            <p class="glow-text">Your one-stop destination for car customization and servicing.</p>
+            <a href="#services" class="glowing-button">Explore Services</a>
+        </div>
+        <div class="hero-image">
+            <img src="{% static 'img/BMWm4.jpg' %}" alt="Car Modification" class="slide-in">
+        </div>
+    </section>
+
+<!-- Services Boxes Section -->
+<section id="car-services-section" class="services-boxes">
+        <h2 class="fade-in">Our Core Services</h2>
+        <div class="services-boxes-grid">
+            <div class="service-box hover-glow">
+                <a href="Car_Service_Booking/" class="service-box-link">
+                    <i class="fas fa-car"></i>
+                    <h3>Car Services</h3>
+                    <p>We provide top-notch car servicing to keep your vehicle in perfect condition.</p>
+                </a>
+            </div>
+
+            <div id="modification-section" class="service-box hover-glow">
+                <i class="fas fa-tools"></i>
+                <h3>Car Modification</h3>
+                <p>Customize your car with our advanced modification services.</p>
+            </div>
+
+           <div class="service-box hover-glow" onclick="window.location.href='{% url 'sell_car' %}'" style="cursor: pointer;">
+    <i class="fas fa-handshake"></i>
+    <h3>Car Selling/Purchasing</h3>
+    <p>Buy or sell your car with ease through our trusted platform.</p>
+</div>
+        </div>
+    </section>
+   <!-- About Us Section -->
+    <section id="about" class="about">
+        <h2 class="fade-in">About Us</h2>
+        <p>At Inferno Motors, we specialize in transforming your vehicle into a masterpiece. With years of experience in car customization and servicing, we offer unparalleled quality and innovation.</p>
+        <div class="about-grid">
+            <div class="about-item">
+                <i class="fas fa-tools"></i>
+                <h3>Expert Technicians</h3>
+                <p>Our team of certified technicians ensures your car is in the best hands.</p>
+            </div>
+            <div class="about-item">
+                <i class="fas fa-car"></i>
+                <h3>Wide Range of Services</h3>
+                <p>From performance upgrades to aesthetic modifications, we do it all.</p>
+            </div>
+            <div class="about-item">
+                <i class="fas fa-award"></i>
+                <h3>Award-Winning Quality</h3>
+                <p>Recognized for excellence in car customization and customer service.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dealership Section -->
+    <section id="dealership" class="dealership">
+        <h2 class="fade-in">Our Dealership Partners</h2>
+        <p>We collaborate with the best dealerships to bring you exclusive offers and premium vehicles.</p>
+        <div class="dealership-grid">
+            <div class="dealership-item">
+                <img src="{% static 'img/dealer1.jpg' %}" alt="Dealer 1">
+                <h3>Luxury Motors</h3>
+                <p>Specializing in high-end luxury vehicles.</p>
+            </div>
+            <div class="dealership-item">
+                <img src="{% static 'img/dealer2.jpg' %}" alt="Dealer 2">
+                <h3>Performance Autos</h3>
+                <p>Your destination for performance cars.</p>
+            </div>
+            <div class="dealership-item">
+                <img src="{% static 'img/dealer3.jpg' %}" alt="Dealer 3">
+                <h3>Classic Rides</h3>
+                <p>Vintage and classic car specialists.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <h2 class="fade-in">Our Services</h2>
+        <div class="service-grid">
+            <div class="service-item hover-glow" onclick="navigateToSection('modification-section')">
+                <img src="{% static 'img/mf.jpg' %}" alt="Modification">
+                <p>Car Modification</p>
+            </div>
+            <div class="service-item hover-glow" onclick="navigateToSection('car-services-section')">
+                <img src="{% static 'img/crp.webp' %}" alt="Repair">
+                <p>Car Repair</p>
+            </div>
+
+            <div class="service-item hover-glow">
+            <a href="car_selection/"  style="text-decoration: none; color: white;">
+                <img src="{% static 'img/car_p.png' %}" alt="Parts">
+                <p>Car Parts</p>
+            </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+
+<section id="contact" class="contact">
+    <h2 class="fade-in">Contact Us</h2>
+    <p>Have questions or need assistance? Reach out to us!</p>
+    <form class="contact-form" method="post" action="{% url 'send_feedback' %}" id="feedbackForm">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+
+    <!-- Thank You Popup -->
+    <div id="thankYouPopup" class="popup">
+        <div class="popup-content">
+            <span class="close-popup">&times;</span>
+            <h2>Thank You for contact us!</h2>
+            <p>Your feedback has been received. We will get back to you shortly.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Add some CSS for the popup -->
+
+
+<!-- Add JavaScript to handle form submission and show the popup -->
+<script>
+    document.getElementById('feedbackForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the form from submitting the traditional way
+
+        // Submit the form data via AJAX
+        fetch("{% url 'send_feedback' %}", {
+            method: 'POST',
+            body: new FormData(this),
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}' // Include CSRF token for security
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Show the thank you popup
+                document.getElementById('thankYouPopup').style.display = 'block';
+
+                // Hide the popup after 1 second (1000 milliseconds)
+                setTimeout(function () {
+                    document.getElementById('thankYouPopup').style.display = 'none';
+                }, 1000); // 1000ms = 1 second
+            } else {
+                alert('Something went wrong. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    // Close the popup when the close button is clicked
+    document.querySelector('.close-popup').addEventListener('click', function () {
+        document.getElementById('thankYouPopup').style.display = 'none';
+    });
+</script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Company Name: Inferno Motors</p>
+            <p>Email: support@infernomotors.com</p>
+            <p>Mobile: +91 9876543210</p>
+            <ul>
+                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#dealership">Dealership</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/home.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+    .dropdown-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 5px;
+        display: none;
+        position: absolute;
+        z-index: 1000;
+    }
+</style>
+ <script>
+        function updateDropdowns() {
+            let first = document.getElementById("first").value;
+            let second = document.getElementById("second");
+            let third = document.getElementById("third");
+
+            if (first !== "") {
+                second.disabled = false;
+            } else {
+                second.disabled = true;
+                third.disabled = true;
+                second.value = "";
+                third.value = "";
+            }
+
+            if (second.value !== "") {
+                third.disabled = false;
+            } else {
+                third.disabled = true;
+                third.value = "";
+            }
+        }
+    </script>
+<style>
+        select {
+            margin: 10px;
+            padding: 5px;
+        }
+        .service-item {
+            cursor: pointer;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+    <script>
+        function navigateToSection(sectionId) {
+            let section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inferno Motors - Checkout</title>
+    <link rel="stylesheet" href="{% static 'css/checkout_styles.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Inferno Motors</div>
+        <ul class="nav-links">
+            {% if request.session.name %}
+            <li><a href="{% url 'signout' %}">Sign Out</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Sign In</a></li>
+            {% endif %}
+            <li><a href="{% url 'home' %}">Home</a></li>
+        </ul>
+    </nav>
+
+    <!-- Checkout Container -->
+    <div class="checkout-container">
+        <h1>Checkout</h1>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <div class="summary-item">
+                <img src="{{ part.image.url }}" alt="{{ part.name }}">
+                <div class="item-details">
+                    <h3>{{ part.car_model.company.name }} {{ part.car_model.name }} - {{ part.name }}</h3>
+                    <p>Price: ₹<span id="unit-price">{{ part.price }}</span></p>
+                    <div class="quantity-control">
+                        <button class="quantity-btn" id="decrease-qty">-</button>
+                        <input type="number" id="quantity" name="quantity" min="1" max="{{ part.quantity }}" value="{{ quantity }}" readonly>
+                        <button class="quantity-btn" id="increase-qty">+</button>
+                    </div>
+                    <p>Total: ₹<span id="total-price">{% widthratio part.price 1 quantity %}</span></p>
+                    <p class="stock-info">Available: {{ part.quantity }} units</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <div class="shipping-address">
+            <h2>Shipping Address</h2>
+            <form id="addressForm">
+                {% csrf_token %}
+                <input type="hidden" name="part_id" value="{{ part.id }}">
+                <input type="hidden" id="hidden-quantity" name="quantity" value="{{ quantity }}">
+
+                <div class="form-group">
+                    <label for="full_name">Full Name</label>
+                    <input type="text" id="full_name" name="full_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address_line1">Address Line 1</label>
+                    <input type="text" id="address_line1" name="address_line1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address_line2">Address Line 2</label>
+                    <input type="text" id="address_line2" name="address_line2">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <select id="state" name="state" required>
+                            <option value="Gujarat" selected>Gujarat</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <select id="city" name="city" required>
+                            <option value="">Select City</option>
+                            <option value="Ahmedabad">Ahmedabad</option>
+                            <option value="Surat">Surat</option>
+                            <option value="Vadodara">Vadodara</option>
+                            <option value="Rajkot">Rajkot</option>
+                            <option value="Gandhinagar">Gandhinagar</option>
+                            <option value="Bhavnagar">Bhavnagar</option>
+                            <option value="Jamnagar">Jamnagar</option>
+                            <option value="Junagadh">Junagadh</option>
+                            <option value="Anand">Anand</option>
+                            <option value="Navsari">Navsari</option>
+                            <option value="Morbi">Morbi</option>
+                            <option value="Nadiad">Nadiad</option>
+                            <option value="Surendranagar">Surendranagar</option>
+                            <option value="Bharuch">Bharuch</option>
+                            <option value="Porbandar">Porbandar</option>
+                            <option value="Ankleshwar">Ankleshwar</option>
+                            <option value="Gandhidham">Gandhidham</option>
+                            <option value="Veraval">Veraval</option>
+                            <option value="Vapi">Vapi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pincode">PIN Code</label>
+                        <input type="text" id="pincode" name="pincode" pattern="\d{6}" title="6-digit PIN code" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" title="10-digit phone number" required>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="payment-method">
+            <h2>Payment Method</h2>
+            <div class="payment-options">
+                <div class="payment-option active">
+                    <i class="fas fa-qrcode"></i>
+                    <span>QR Code Payment</span>
+                </div>
+            </div>
+
+            <div class="qr-code-container">
+                <!-- Dynamic QR code with price -->
+                <img id="qr-code-image" src="{% url 'payment_qr' %}?price={% widthratio part.price 1 quantity %}"
+                     alt="Scan to Pay ₹{% widthratio part.price 1 quantity %}">
+                <p>Scan to pay ₹<span id="qr-amount">{% widthratio part.price 1 quantity %}</span></p>
+                <div class="payment-details">
+                    <p><strong>UPI ID:</strong> 9427680319@axl </p>
+                    <p><strong>Amount:</strong> ₹<span id="payment-amount">{% widthratio part.price 1 quantity %}</span></p>
+                </div>
+            </div>
+            <div class="payment-confirm">
+                <label>
+                    <input type="checkbox" id="payment-confirm" required>
+                    I confirm that I have completed the payment
+                </label>
+            </div>
+        </div>
+
+        <!-- Order Button -->
+        <button id="confirm-order" class="confirm-order-btn">Confirm Order</button>
+    </div>
+
+    <!-- Order Confirmation Popup -->
+    <div id="orderConfirmation" class="popup">
+        <div class="popup-content">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h2>Order Confirmed!</h2>
+            <p>Your order has been placed successfully.</p>
+            <p>Thank you for shopping with Inferno Motors.</p>
+            <button id="continueShopping">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Error Popup -->
+    <div id="errorPopup" class="popup">
+        <div class="popup-content">
+            <i class="fas fa-times-circle error-icon"></i>
+            <h2>Error!</h2>
+            <p id="errorMessage">There was an error processing your order.</p>
+            <button id="closeError">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Pass Django data to JavaScript properly
+        const CONFIRM_ORDER_URL = "{% url 'confirm_order' %}";
+        const HOME_URL = "{% url 'home' %}";
+        const QR_CODE_URL = "{% url 'payment_qr' %}";
+        const UNIT_PRICE = parseFloat("{{ part.price }}");
+        const MAX_QUANTITY = parseInt("{{ part.quantity }}");
+        const INITIAL_QUANTITY = parseInt("{{ quantity }}");
+    </script>
+    <script src="{% static 'js/checkout.js' %}"></script>
+</body>
+</html>

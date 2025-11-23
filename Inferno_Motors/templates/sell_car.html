@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Sell Your Car</h1>
+
+    {% if messages %}
+    <div class="alert-messages mb-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" id="carForm" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="make">Make</label>
+                    <select class="form-control" id="make" name="make" required>
+                        <option value="">Select Make</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="Hyundai">Hyundai</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Tata">Tata</option>
+                        <option value="Mahindra">Mahindra</option>
+                        <option value="Maruti Suzuki">Maruti Suzuki</option>
+                        <option value="Kia">Kia</option>
+                        <option value="Volkswagen">Volkswagen</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a car make</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="model">Model</label>
+                    <input type="text" class="form-control" id="model" name="model" required>
+                    <div class="invalid-feedback">Please enter the car model</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <input type="number" class="form-control" id="year" name="year" min="1990" max="2023" required>
+                    <div class="invalid-feedback">Please enter a valid year (1990-2023)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Price (₹)</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">₹</span>
+                        </div>
+                        <input type="number" class="form-control" id="price" name="price" min="100000" step="50000" required>
+                    </div>
+                    <div class="invalid-feedback">Minimum price should be ₹1,00,000</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="mileage">Mileage (km)</label>
+                    <input type="number" class="form-control" id="mileage" name="mileage" min="0" required>
+                    <div class="invalid-feedback">Please enter valid mileage</div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="fuel_type">Fuel Type</label>
+                    <select class="form-control" id="fuel_type" name="fuel_type" required>
+                        <option value="">Select Fuel Type</option>
+                        <option value="petrol">Petrol</option>
+                        <option value="diesel">Diesel</option>
+                        <option value="electric">Electric</option>
+                        <option value="hybrid">Hybrid</option>
+                        <option value="cng">CNG</option>
+                    </select>
+                    <div class="invalid-feedback">Please select fuel type</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="transmission">Transmission</label>
+                    <select class="form-control" id="transmission" name="transmission" required>
+                        <option value="">Select Transmission</option>
+                        <option value="manual">Manual</option>
+                        <option value="automatic">Automatic</option>
+                    </select>
+                    <div class="invalid-feedback">Please select transmission type</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="color">Color</label>
+                    <div class="d-flex align-items-center">
+                        <input type="color" class="form-control p-1" id="color" name="color" style="height: 40px; width: 80px;" value="#ffffff" required>
+                        <div id="colorPreview" style="width: 30px; height: 30px; border: 1px solid #ddd; margin-left: 10px;"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="engine_capacity">Engine Capacity (cc)</label>
+                    <input type="number" class="form-control" id="engine_capacity" name="engine_capacity" min="500" max="5000" required>
+                    <div class="invalid-feedback">Please enter valid engine capacity</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <select class="form-control" id="location" name="location" required>
+                        <option value="">Select Location</option>
+                        <option value="Ahmedabad">Ahmedabad</option>
+                        <option value="Surat">Surat</option>
+                        <option value="Vadodara">Vadodara</option>
+                        <option value="Rajkot">Rajkot</option>
+                        <option value="Gandhinagar">Gandhinagar</option>
+                        <option value="Bhavnagar">Bhavnagar</option>
+                        <option value="Jamnagar">Jamnagar</option>
+                        <option value="Junagadh">Junagadh</option>
+                    </select>
+                    <div class="invalid-feedback">Please select location</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="contact_number">Contact Number</label>
+                    <input type="tel" class="form-control" id="contact_number" name="contact_number" pattern="[0-9]{10}" required>
+                    <div class="invalid-feedback">Please enter 10-digit phone number</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+            <div class="invalid-feedback">Please enter description</div>
+        </div>
+
+        <div class="form-group">
+            <label for="images">Car Images (Upload at least 3 images)</label>
+            <input type="file" class="form-control-file" id="images" name="images" multiple accept="image/*" required>
+            <div id="imagePreview" class="mt-2 d-flex flex-wrap"></div>
+            <div class="invalid-feedback">Please upload at least 3 images</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg">List My Car</button>
+    </form>
+</div>
+
+<script>
+// Color picker preview
+document.getElementById('color').addEventListener('input', function() {
+    document.getElementById('colorPreview').style.backgroundColor = this.value;
+});
+
+// Image upload preview and validation
+document.getElementById('images').addEventListener('change', function(e) {
+    const preview = document.getElementById('imagePreview');
+    preview.innerHTML = '';
+
+    if (this.files.length < 3) {
+        const error = document.createElement('div');
+        error.className = 'text-danger mb-2 w-100';
+        error.textContent = 'Please upload at least 3 images';
+        preview.appendChild(error);
+        this.setCustomValidity('Need at least 3 images');
+    } else {
+        this.setCustomValidity('');
+    }
+
+    for (let i = 0; i < Math.min(this.files.length, 5); i++) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const container = document.createElement('div');
+            container.className = 'mr-2 mb-2 position-relative';
+            container.style.width = '120px';
+
+            const img = document.createElement('img');
+            img.src = event.target.result;
+            img.className = 'img-thumbnail';
+            img.style.height = '80px';
+            img.style.objectFit = 'cover';
+
+            if (i === 0) {
+                const badge = document.createElement('span');
+                badge.className = 'badge badge-primary position-absolute';
+                badge.style.top = '5px';
+                badge.style.left = '5px';
+                badge.textContent = 'Primary';
+                container.appendChild(badge);
+            }
+
+            container.appendChild(img);
+            preview.appendChild(container);
+        }
+        reader.readAsDataURL(this.files[i]);
+    }
+});
+
+// Form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        const form = document.getElementById('carForm');
+        form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    }, false);
+})();
+</script>
+
+<style>
+.color-preview {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+.image-preview img {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #ddd;
+}
+.image-preview img:first-child {
+    border-color: #4CAF50;
+}
+.was-validated .form-control:invalid, .was-validated .form-control:invalid:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.2rem rgba(220,53,69,.25);
+}
+</style>
+{% endblock %}

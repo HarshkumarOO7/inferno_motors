@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inferno Motors - Listing Submitted</title>
+    <link rel="stylesheet" href="{% static 'css/sell_car.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Inferno Motors</div>
+        <ul class="nav-links">
+            {% if request.session.name %}
+            <li><a href="{% url 'signout' %}">Sign Out</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Sign In</a></li>
+            {% endif %}
+            <li><a href="{% url 'home' %}#about">About Us</a></li>
+            <li><a href="{% url 'home' %}#dealership">Dealership</a></li>
+            <li><a href="{% url 'home' %}#services">Services</a></li>
+            <li><a href="{% url 'home' %}#contact">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Success Hero Section -->
+    <section class="sell-hero" style="height: 40vh;">
+        <div class="hero-content">
+            <h1 class="fade-in">Thank You <span>{{ request.session.name }}!</span></h1>
+            <p class="glow-text">Your car listing has been submitted successfully.</p>
+        </div>
+    </section>
+
+    <!-- Success Content Section -->
+    <section class="success-content" style="padding: 60px 5%; text-align: center;">
+        <div class="success-icon">
+            <i class="fas fa-check-circle" style="font-size: 80px; color: #4CAF50;"></i>
+        </div>
+        <h2 style="font-size: 2rem; margin: 20px 0;">Listing Submitted Successfully!</h2>
+        <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto 30px;">
+            Your car listing is now under review by our team. We'll contact you shortly with the next steps.
+            You can view and manage your listings in your account dashboard.
+        </p>
+        <div class="action-buttons" style="display: flex; justify-content: center; gap: 20px;">
+            <a href="{% url 'home' %}" class="btn" style="padding: 12px 25px; background-color: #f39c12; color: white; text-decoration: none; border-radius: 5px; font-weight: 600;">
+                Back to Home
+            </a>
+            <a href="{% url 'my_listings' %}" class="btn" style="padding: 12px 25px; background-color: #333; color: white; text-decoration: none; border-radius: 5px; font-weight: 600;">
+                View My Listings
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Company Name: Inferno Motors</p>
+            <p>Email: support@infernomotors.com</p>
+            <p>Mobile: +91 9876543210</p>
+            <ul>
+                <li><a href="{% url 'home' %}#contact">Contact Us</a></li>
+                <li><a href="{% url 'home' %}#about">About Us</a></li>
+                <li><a href="{% url 'home' %}#services">Services</a></li>
+                <li><a href="{% url 'home' %}#dealership">Dealership</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

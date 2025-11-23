@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Service Booking</title>
+  <link rel="stylesheet" href="{% static 'css/Car_Service_Booking.css'%}"> <!-- Link to the original CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- Font Awesome for icons -->
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">Car Service</div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section with Auto-Scrolling Background -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to Car Service Booking</h1>
+      <p>Your one-stop solution for all car service needs.</p>
+    </div>
+    <div class="hero-background">
+      <div class="background-slide active" style="background-image: url('{% static 'img/mf1.jpg' %}');">
+        <div class="slide-content">
+          <h2>Routine Maintenance</h2>
+          <p>Keep your car running smoothly with our expert maintenance services.</p>
+        </div>
+      </div>
+      <div class="background-slide" style="background-image: url('{% static 'img/oooo.jpg.crdownload' %}');">
+        <div class="slide-content">
+          <h2>Diagnostic Services</h2>
+          <p>Advanced diagnostics to identify and fix issues quickly.</p>
+        </div>
+      </div>
+      <div class="background-slide" style="background-image: url('{% static 'img/mf1.jpg' %}');">
+        <div class="slide-content">
+          <h2>Repair Services</h2>
+          <p>Comprehensive repair services for all car models.</p>
+        </div>
+      </div>
+      <div class="background-slide" style="background-image: url('{% static 'img/oooo.jpg.crdownload' %}');">
+        <div class="slide-content">
+          <h2>Performance Upgrades</h2>
+          <p>Enhance your car's performance with our upgrades.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+<!-- Services Section -->
+<section class="services">
+  <h2>Our Services</h2>
+  <div class="services-grid">
+    <!-- Row 1 -->
+    <div class="service-box">
+      <i class="fas fa-tools"></i>
+      <h3>Routine Maintenance</h3>
+      <p>Regular check-ups to keep your car in top condition.</p>
+      <div class="hover-content">
+        <p>Oil changes, tire rotations, and more.</p>
+      </div>
+    </div>
+    <div class="service-box">
+      <i class="fas fa-car-battery"></i>
+      <h3>Diagnostic Services</h3>
+      <p>Advanced diagnostics for accurate problem detection.</p>
+      <div class="hover-content">
+        <p>Engine diagnostics, electrical system checks, etc.</p>
+      </div>
+    </div>
+    <div class="service-box">
+      <i class="fas fa-wrench"></i>
+      <h3>Repair Services</h3>
+      <p>Comprehensive repairs for all car issues.</p>
+      <div class="hover-content">
+        <p>Brake repairs, engine fixes, and more.</p>
+      </div>
+    </div>
+    <div class="service-box">
+      <i class="fas fa-paint-brush"></i>
+      <h3>Body and Interior</h3>
+      <p>Restore your car's body and interior to perfection.</p>
+      <div class="hover-content">
+        <p>Dent removal, upholstery repair, etc.</p>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="service-box">
+      <i class="fas fa-tachometer-alt"></i>
+      <h3>Performance Upgrades</h3>
+      <p>Boost your car's performance with our upgrades.</p>
+      <div class="hover-content">
+        <p>Turbochargers, exhaust systems, etc.</p>
+      </div>
+    </div>
+    <div class="service-box">
+      <i class="fas fa-ambulance"></i>
+      <h3>Emergency Services</h3>
+      <p>24/7 emergency assistance for your car.</p>
+      <div class="hover-content">
+        <p>Towing, flat tire assistance, etc.</p>
+      </div>
+    </div>
+    <div class="service-box">
+      <i class="fas fa-cogs"></i>
+      <h3>Specialized Services</h3>
+      <p>Custom solutions for unique car needs.</p>
+      <div class="hover-content">
+        <p>Custom modifications, etc.</p>
+      </div>
+    </div>
+    <div class="service-box">
+      <i class="fas fa-file-contract"></i>
+      <h3>Warranty Services</h3>
+      <p>Warranty and recall services for your car.</p>
+      <div class="hover-content">
+        <p>Free repairs under warranty.</p>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="service-box">
+      <i class="fas fa-snowflake"></i>
+      <h3>Seasonal Services</h3>
+      <p>Prepare your car for every season.</p>
+      <div class="hover-content">
+        <p>Winterization, AC servicing, etc.</p>
+      </div>
+    </div>
+    <div class="service-box">
+      <i class="fas fa-cogs"></i>
+      <h3>Custom Services</h3>
+      <p>Tailored services for your car.</p>
+      <div class="hover-content">
+        <p>Custom modifications, etc.</p>
+      </div>
+    </div>
+    <div class="service-box">
+      <i class="fas fa-car-crash"></i>
+      <h3>Accident Repairs</h3>
+      <p>Expert repairs for accident-damaged cars.</p>
+      <div class="hover-content">
+        <p>Frame straightening, panel replacement, etc.</p>
+      </div>
+    </div>
+    <div class="service-box">
+      <i class="fas fa-gas-pump"></i>
+      <h3>Fuel System Services</h3>
+      <p>Maintain and repair your car's fuel system.</p>
+      <div class="hover-content">
+        <p>Fuel injector cleaning, pump replacement, etc.</p>
+      </div>
+    </div>
+  </div>
+</section>
+  <!-- About Service Section -->
+  <section class="about-service">
+    <div class="about-content">
+      <h2>About Our Services</h2>
+      <p>We provide a wide range of car services to ensure your vehicle stays in top condition. From routine maintenance to emergency repairs, we've got you covered.</p>
+      <ul>
+        <li>Expert Technicians</li>
+        <li>Advanced Equipment</li>
+        <li>Affordable Pricing</li>
+        <li>24/7 Support</li>
+      </ul>
+    </div>
+    <div class="about-image">
+      <img src="{% static 'img/crp.webp'%}" alt="Car Service">
+    </div>
+  </section>
+
+  <!-- Feedback Section -->
+  <section class="feedback">
+    <h2>Customer Feedback</h2>
+    <div class="feedback-grid">
+      <div class="feedback-box">
+        <p>"Great service! My car runs like new."</p>
+        <span>- John Doe</span>
+      </div>
+      <div class="feedback-box">
+        <p>"Highly recommend their diagnostic services."</p>
+        <span>- Jane Smith</span>
+      </div>
+      <div class="feedback-box">
+        <p>"Affordable and reliable repairs."</p>
+        <span>- Mike Johnson</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About Us</h3>
+        <p>We are a leading car service provider with years of experience.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+        <p>Email: info@carservice.com</p>
+        <p>Phone: +91 1234567890</p>
+        <p>Working Hours: 9 AM - 7 PM</p>
+      </div>
+      <div class="footer-section">
+        <h3>Services</h3>
+        <ul>
+          <li>Routine Maintenance</li>
+          <li>Diagnostic Services</li>
+          <li>Repair Services</li>
+          <li>Performance Upgrades</li>
+          <li>Emergency Services</li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Follow Us</h3>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2023 Car Service. All rights reserved.</p>
+      <ul>
+        <li><a href="#">Terms & Conditions</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Partnership</a></li>
+        <li><a href="#">Dealership</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/Car_Service_Booking.js'%}"></script>
+</body>
+</html>

@@ -1,0 +1,963 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<style>
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4cc9f0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --success-color: #4bb543;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+
+    /* Light theme colors */
+    --bg-color: #ffffff;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+    --border-color: #e0e0e0;
+    --hover-bg: #f5f5f5;
+}
+
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --card-bg: #1e1e1e;
+    --input-bg: #2d2d2d;
+    --border-color: #444;
+    --hover-bg: #2a2a2a;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+    z-index: 100;
+    transition: var(--transition);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    background: var(--secondary-color);
+}
+
+.theme-toggle i {
+    font-size: 1.2rem;
+}
+
+.car-listings-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.page-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    color: var(--text-color);
+    position: relative;
+}
+
+.page-title::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 4px;
+    background: var(--accent-color);
+    margin: 0.5rem auto;
+    border-radius: 2px;
+}
+
+/* Search Section */
+.search-container {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+}
+
+.search-container:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.search-inputs input {
+    flex: 1 1 200px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    background: var(--input-bg);
+    color: var(--text-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+/* Car Grid */
+.car-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.car-card:hover {
+    background: var(--hover-bg);
+}
+
+/* Modal Styles */
+.modal-content {
+    background: var(--card-bg);
+    color: var(--text-color);
+}
+
+.modal-specs div {
+    background: var(--hover-bg);
+}
+
+.modal-seller-info {
+    background: var(--hover-bg);
+}
+
+/* Pagination */
+.pagination a {
+    border: 1px solid var(--border-color);
+    color: var(--primary-color);
+    background: var(--card-bg);
+}
+
+.pagination a:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Image Gallery */
+.gallery-thumbnails {
+    background: var(--hover-bg);
+}
+
+
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4cc9f0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --success-color: #4bb543;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+.car-listings-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.page-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    color: var(--dark-color);
+    position: relative;
+}
+
+.page-title::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 4px;
+    background: var(--accent-color);
+    margin: 0.5rem auto;
+    border-radius: 2px;
+}
+
+/* Search Section */
+.search-container {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.search-container:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.search-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    flex-grow: 1;
+}
+
+.search-inputs input {
+    flex: 1 1 200px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.search-inputs input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+}
+
+.search-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.search-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+/* Car Grid */
+.car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.car-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.car-card:nth-child(1) { animation-delay: 0.1s; }
+.car-card:nth-child(2) { animation-delay: 0.2s; }
+.car-card:nth-child(3) { animation-delay: 0.3s; }
+.car-card:nth-child(4) { animation-delay: 0.4s; }
+.car-card:nth-child(5) { animation-delay: 0.5s; }
+.car-card:nth-child(6) { animation-delay: 0.6s; }
+
+.car-image {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.car-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.car-card:hover .car-image img {
+    transform: scale(1.05);
+}
+
+.car-info {
+    padding: 1.25rem;
+}
+
+.car-info h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    color: var(--dark-color);
+}
+
+.price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0.5rem 0;
+}
+
+.car-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.car-specs span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.car-specs i {
+    color: var(--primary-color);
+}
+
+.car-location {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.pagination a {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.pagination a:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.pagination .current {
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 5px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    overflow-y: auto;
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background: white;
+    margin: 2rem auto;
+    max-width: 900px;
+    width: 95%;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    animation: slideInDown 0.3s;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    z-index: 10;
+    transition: var(--transition);
+}
+
+.close-modal:hover {
+    color: var(--dark-color);
+    transform: rotate(90deg);
+}
+
+.modal-car-details {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.modal-car-images {
+    height: 350px;
+    overflow: hidden;
+    position: relative;
+}
+
+.modal-car-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-car-info {
+    padding: 1.5rem;
+}
+
+.modal-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 1rem 0;
+}
+
+.modal-specs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.modal-specs div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: #f5f5f5;
+    border-radius: 5px;
+}
+
+.modal-specs i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.modal-description {
+    margin: 1.5rem 0;
+    line-height: 1.6;
+}
+
+.modal-seller-info {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+}
+
+.modal-seller-info h3 {
+    margin-top: 0;
+}
+
+.btn-purchase {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.btn-purchase:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    text-align: center;
+}
+
+.loading-state i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.error-message {
+    padding: 2rem;
+    text-align: center;
+}
+
+.btn-retry {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: var(--transition);
+}
+
+.btn-retry:hover {
+    background: var(--secondary-color);
+}
+
+/* Image Gallery */
+.image-gallery {
+    position: relative;
+    height: 350px;
+    overflow: hidden;
+}
+
+.gallery-main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease;
+}
+
+.gallery-thumbnails {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    overflow-x: auto;
+    background: #f5f5f5;
+}
+
+.gallery-thumbnail {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition);
+    border-radius: 4px;
+}
+
+.gallery-thumbnail:hover, .gallery-thumbnail.active {
+    border-color: var(--primary-color);
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    .modal-car-details {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .modal-car-images {
+        height: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .search-form {
+        flex-direction: column;
+    }
+
+    .search-inputs {
+        width: 100%;
+    }
+
+    .search-btn {
+        width: 100%;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="car-listings-container animate__animated animate__fadeIn">
+    <h1 class="page-title">Available Cars</h1>
+
+    <!-- Search Form -->
+    <div class="search-container">
+        <form method="get" class="search-form">
+            <div class="search-inputs">
+                <input type="text" name="make" placeholder="Make (e.g. Toyota)" value="{{ request.GET.make }}">
+                <input type="text" name="model" placeholder="Model (e.g. Corolla)" value="{{ request.GET.model }}">
+                <input type="number" name="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}">
+                <input type="number" name="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}">
+            </div>
+            <button type="submit" class="search-btn">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Car Listings Grid -->
+    <div class="car-grid">
+        {% for car in page_obj %}
+        <div class="car-card" onclick="showCarDetails({{ car.id }})">
+            <div class="car-image">
+                {% with car.images.first as primary_image %}
+                    {% if primary_image %}
+                        <img src="{{ primary_image.image.url }}" alt="{{ car.make }} {{ car.model }}" loading="lazy">
+                    {% else %}
+                        <img src="{% static 'img/car_placeholder.jpg' %}" alt="No image available" loading="lazy">
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="car-info">
+                <h3>{{ car.year }} {{ car.make }} {{ car.model }}</h3>
+                <p class="price">₹{{ car.price|floatformat:"0" }}</p>
+                <div class="car-specs">
+                    <span><i class="fas fa-tachometer-alt"></i> {{ car.mileage }} km</span>
+                    <span><i class="fas fa-gas-pump"></i> {{ car.get_fuel_type_display }}</span>
+                    <span><i class="fas fa-cog"></i> {{ car.get_transmission_display }}</span>
+                </div>
+                <div class="car-location">
+                    <i class="fas fa-map-marker-alt"></i> {{ car.location }}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-cars animate__animated animate__fadeIn">
+            <p>No cars found matching your criteria.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1{% if request.GET.make %}&make={{ request.GET.make }}{% endif %}{% if request.GET.model %}&model={{ request.GET.model }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}">&laquo; First</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.make %}&make={{ request.GET.make }}{% endif %}{% if request.GET.model %}&model={{ request.GET.model }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.make %}&make={{ request.GET.make }}{% endif %}{% if request.GET.model %}&model={{ request.GET.model }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.make %}&make={{ request.GET.make }}{% endif %}{% if request.GET.model %}&model={{ request.GET.model }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}">Last &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Theme Toggle Button -->
+<button class="theme-toggle" id="themeToggle">
+    <i class="fas fa-moon"></i>
+</button>
+
+    <!-- Car Details Modal -->
+    <div id="carDetailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modalCarContent"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/glider-js@1/glider.min.js"></script>
+<script>
+
+// Theme Toggle Functionality
+const themeToggle = document.getElementById('themeToggle');
+const currentTheme = localStorage.getItem('theme') || 'light';
+
+// Set initial theme
+document.documentElement.setAttribute('data-theme', currentTheme);
+updateThemeIcon(currentTheme);
+
+// Toggle theme on button click
+themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+});
+
+function updateThemeIcon(theme) {
+    const icon = themeToggle.querySelector('i');
+    if (theme === 'dark') {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+    }
+}
+
+// Function to show car details in modal
+function showCarDetails(carId) {
+    // Show loading state
+    document.getElementById('modalCarContent').innerHTML = `
+        <div class="loading-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading car details...</p>
+        </div>
+    `;
+
+    // Show modal with animation
+    const modal = document.getElementById('carDetailsModal');
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+
+    fetch(`/get_car_details/${carId}/`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Format price with commas
+                const formattedPrice = new Intl.NumberFormat('en-IN').format(data.car.price);
+
+                // Create image gallery HTML
+                const galleryHTML = data.images.length > 1 ? `
+                    <div class="image-gallery">
+                        <img src="${data.images[0].image}" alt="${data.car.make} ${data.car.model}" class="gallery-main-image" id="mainImage">
+                        <div class="gallery-thumbnails">
+                            ${data.images.map((image, index) => `
+                                <img src="${image.image}"
+                                     alt="Thumbnail ${index + 1}"
+                                     class="gallery-thumbnail ${index === 0 ? 'active' : ''}"
+                                     onclick="changeMainImage('${image.image}')">
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : `
+                    <div class="image-gallery">
+                        <img src="${data.images[0].image}" alt="${data.car.make} ${data.car.model}" class="gallery-main-image">
+                    </div>
+                `;
+
+                // Populate modal with car details
+                const modalContent = `
+                    <div class="modal-car-details">
+                        ${galleryHTML}
+                        <div class="modal-car-info">
+                            <h2>${data.car.year} ${data.car.make} ${data.car.model}</h2>
+                            <p class="modal-price">₹${formattedPrice}</p>
+
+                            <div class="modal-specs">
+                                <div><i class="fas fa-tachometer-alt"></i> ${data.car.mileage} km</div>
+                                <div><i class="fas fa-gas-pump"></i> ${data.car.fuel_type}</div>
+                                <div><i class="fas fa-cog"></i> ${data.car.transmission}</div>
+                                <div><i class="fas fa-paint-brush"></i> ${data.car.color}</div>
+                                <div><i class="fas fa-arrows-alt-h"></i> ${data.car.engine_capacity} cc</div>
+                            </div>
+
+                            <div class="modal-description">
+                                <h3>Description</h3>
+                                <p>${data.car.description || 'No description available'}</p>
+                            </div>
+
+                            <div class="modal-seller-info">
+                                <h3>Seller Information</h3>
+                                <p><i class="fas fa-user"></i> ${data.seller.name}</p>
+                                <p><i class="fas fa-phone"></i> ${data.car.contact_number}</p>
+                                <p><i class="fas fa-map-marker-alt"></i> ${data.car.location}</p>
+                            </div>
+
+                            {% if request.session.name %}
+                            <a href="/purchase_request/${data.car.id}/" class="btn-purchase">
+                                <i class="fas fa-shopping-cart"></i> Make Purchase Request
+                            </a>
+                            {% else %}
+                            <a href="/login/" class="btn-purchase">
+                                <i class="fas fa-sign-in-alt"></i> Login to Purchase
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('modalCarContent').innerHTML = modalContent;
+
+                // Initialize image gallery if multiple images
+                if (data.images.length > 1) {
+                    initImageGallery();
+                }
+            } else {
+                throw new Error(data.message || 'Failed to load car details');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('modalCarContent').innerHTML = `
+                <div class="error-message">
+                    <p>Failed to load car details. Please try again later.</p>
+                    <p><small>${error.message}</small></p>
+                    <button onclick="showCarDetails(${carId})" class="btn-retry">
+                        <i class="fas fa-sync-alt"></i> Retry
+                    </button>
+                </div>
+            `;
+        });
+}
+
+// Change main image in gallery
+function changeMainImage(imageUrl) {
+    const mainImage = document.getElementById('mainImage');
+    if (mainImage) {
+        // Add fade out effect
+        mainImage.style.opacity = '0';
+
+        // After fade out completes, change image and fade in
+        setTimeout(() => {
+            mainImage.src = imageUrl;
+            mainImage.style.opacity = '1';
+        }, 300);
+    }
+
+    // Update active thumbnail
+    document.querySelectorAll('.gallery-thumbnail').forEach(thumb => {
+        thumb.classList.remove('active');
+        if (thumb.src.includes(imageUrl)) {
+            thumb.classList.add('active');
+        }
+    });
+}
+
+// Initialize image gallery with Glider.js
+function initImageGallery() {
+    new Glider(document.querySelector('.gallery-thumbnails'), {
+        slidesToShow: 'auto',
+        slidesToScroll: 1,
+        itemWidth: 100,
+        draggable: true,
+        scrollLock: true,
+        dots: false,
+        arrows: {
+            prev: '.glider-prev',
+            next: '.glider-next'
+        }
+    });
+}
+
+// Close modal when clicking X
+document.querySelector('.close-modal').addEventListener('click', function() {
+    closeModal();
+});
+
+// Close modal when clicking outside
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('carDetailsModal');
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
+// Close modal with animation
+function closeModal() {
+    const modal = document.getElementById('carDetailsModal');
+    modal.style.animation = 'fadeOut 0.3s forwards';
+    document.body.style.overflow = 'auto';
+
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.style.animation = '';
+    }, 300);
+}
+
+// Add fadeOut animation dynamically
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+// Add intersection observer for lazy loading
+document.addEventListener('DOMContentLoaded', function() {
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src || img.src;
+                    img.removeAttribute('loading');
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '200px 0px'
+        });
+
+        lazyImages.forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
+});
+</script>
+{% endblock %}
