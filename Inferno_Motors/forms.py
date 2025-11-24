@@ -1,11 +1,13 @@
 from django import forms
-from .models import *
+from .models import PurchaseRequest
 
 
 class CheckoutForm(forms.Form):
+    # If you expect a user passed in, pop safely
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user')
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
+
 
 class PurchaseRequestForm(forms.ModelForm):
     class Meta:

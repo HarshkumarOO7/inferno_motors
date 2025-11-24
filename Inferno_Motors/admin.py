@@ -8,17 +8,19 @@ class UserDetailsAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'contact')
     search_fields = ('name', 'email', 'contact')
 
-# Register CarCompany model
+
 @admin.register(CarCompany)
 class CarCompanyAdmin(admin.ModelAdmin):
     list_display = ('name', 'image_tag')
     search_fields = ('name',)
 
     def image_tag(self, obj):
-        return format_html('<img src="{}" width="100" height="100" style="border-radius:5px;"/>', obj.image.url) if obj.image else "-"
+        if getattr(obj, 'image', None):
+            return format_html('<img src="{}" width="100" height="100" style="border-radius:5px;"/>', obj.image.url)
+        return "-"
     image_tag.short_description = 'Company Logo'
 
-# Register CarModel model
+
 @admin.register(CarModel)
 class CarModelAdmin(admin.ModelAdmin):
     list_display = ('name', 'company', 'image_tag')
@@ -26,10 +28,12 @@ class CarModelAdmin(admin.ModelAdmin):
     search_fields = ('name', 'company__name')
 
     def image_tag(self, obj):
-        return format_html('<img src="{}" width="100" height="100" style="border-radius:5px;"/>', obj.image.url) if obj.image else "-"
+        if getattr(obj, 'image', None):
+            return format_html('<img src="{}" width="100" height="100" style="border-radius:5px;"/>', obj.image.url)
+        return "-"
     image_tag.short_description = 'Model Image'
 
-# Register CarPart model
+
 @admin.register(CarPart)
 class CarPartAdmin(admin.ModelAdmin):
     list_display = ('name', 'car_model', 'price', 'quantity', 'is_available', 'image_tag')
@@ -42,11 +46,12 @@ class CarPartAdmin(admin.ModelAdmin):
     is_available.short_description = 'Available'
 
     def image_tag(self, obj):
-        return format_html('<img src="{}" width="100" height="100" style="border-radius:5px;"/>', obj.image.url) if obj.image else "-"
+        if getattr(obj, 'image', None):
+            return format_html('<img src="{}" width="100" height="100" style="border-radius:5px;"/>', obj.image.url)
+        return "-"
     image_tag.short_description = 'Part Image'
 
 
-# Car Parts Purchase Admin
 @admin.register(CarPartsPurchase)
 class CarPartsPurchaseAdmin(admin.ModelAdmin):
     list_display = ('user', 'part', 'quantity', 'purchase_date', 'total_price', 'payment_status')
@@ -81,6 +86,7 @@ class CarAdmin(admin.ModelAdmin):
         }),
     )
 
+
 @admin.register(CarImage)
 class CarImageAdmin(admin.ModelAdmin):
     list_display = ('car', 'image_tag', 'is_primary')
@@ -90,7 +96,9 @@ class CarImageAdmin(admin.ModelAdmin):
     list_editable = ('is_primary',)
 
     def image_tag(self, obj):
-        return format_html('<img src="{}" width="150" height="100" style="object-fit: cover;"/>', obj.image.url)
+        if getattr(obj, 'image', None):
+            return format_html('<img src="{}" width="150" height="100" style="object-fit: cover;"/>', obj.image.url)
+        return "-"
     image_tag.short_description = 'Image Preview'
 
     fieldsets = (
@@ -107,8 +115,6 @@ class PurchaseRequestAdmin(admin.ModelAdmin):
     search_fields = ('buyer_name', 'buyer_email', 'car__make', 'car__model')
     readonly_fields = ('created_at', 'updated_at')
 
-    # If you want to show buyer information differently
     def buyer_info(self, obj):
         return f"{obj.buyer_name} ({obj.buyer_email})"
-
     buyer_info.short_description = 'Buyer'
