@@ -177,3 +177,31 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+
+/* basic 3D flip */
+.card {
+  width: 380px;
+  margin: 40px auto;
+  perspective: 1000px;
+  position: relative;
+  transition: height .3s;
+}
+.card-front, .card-back {
+  backface-visibility: hidden;
+  transition: transform .6s;
+  transform-style: preserve-3d;
+  position: absolute;
+  top: 0; left: 0; right:0;
+  padding: 24px;
+  box-sizing: border-box;
+}
+.card-back {
+  transform: rotateY(180deg);
+}
+.card.flipped .card-front {
+  transform: rotateY(180deg);
+}
+.card.flipped .card-back {
+  transform: rotateY(360deg);
+}

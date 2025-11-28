@@ -6,6 +6,4 @@ class InfernoMotorsConfig(AppConfig):
     name = 'Inferno_Motors'
 
     def ready(self):
-        # Temporarily disable signals while debugging admin delete
-        # import Inferno_Motors.signals
-        pass
+        import Inferno_Motors.signals

@@ -14,7 +14,7 @@
     <nav class="navbar">
         <div class="logo">Inferno Motors</div>
         <ul class="nav-links">
-            <li><a href="/">Home</a></li>
+            <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="#">About Us</a></li>
             <li><a href="#">Contact Us</a></li>
             <li><a href="#">Services</a></li>
@@ -26,40 +26,48 @@
     <main>
         <div class="card" id="card">
             <!-- Login Form -->
-            <div class="card-front">
+            <div class="card-front" id="cardFront" aria-hidden="false">
                 <h2>Login</h2>
-                <form method="POST" action="{% url 'login' %}" id="loginForm">
+                <form method="POST" action="{% url 'login' %}" id="loginForm" novalidate>
                     {% csrf_token %}
                     <input type="email" placeholder="Email ID" name="email" required>
                     <input type="password" placeholder="Password" name="password" required>
                     <button type="submit">Login</button>
                 </form>
-                <p>Don't have an account? <a href="#" id="flipToSignup">Sign Up</a></p>
+                <p>Don't have an account?
+                    <!-- progressive enhancement: href goes to signup URL if JS disabled -->
+                    <a href="{% url 'signup' %}" id="flipToSignup">Sign Up</a>
+                </p>
             </div>
 
             <!-- Signup Form -->
-            <div class="card-back">
+            <div class="card-back" id="cardBack" aria-hidden="true">
                 <h2>Sign Up</h2>
-                    <form method="POST" action="{% url 'signup' %}" id="signupForm">
-            {% csrf_token %}
+                <form method="POST" action="{% url 'signup' %}" id="signupForm" novalidate>
+                    {% csrf_token %}
                     <input type="email" placeholder="Email" name="email" required>
                     <input type="text" placeholder="Full Name" name="name" required>
-                    <input type="tel" placeholder="Mobile No" name="contact" required>
+                    <input type="tel" placeholder="Mobile No" name="contact" pattern="[0-9]{10}" required>
                     <input type="password" placeholder="Password" name="password" required>
                     <button type="submit">Sign Up</button>
                 </form>
+
                 <p>Or log in with:</p>
                 <a href="{% provider_login_url 'google' %}">Login with Google</a>
-                <p>Already have an account? <a href="#" id="flipToLogin">Login</a></p>
+
+                <p>Already have an account?
+                    <a href="{% url 'login' %}" id="flipToLogin">Login</a>
+                </p>
             </div>
         </div>
     </main>
+
     {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
     {% endif %}
 
     <script src="{% static 'js/login.js' %}"></script>

@@ -294,7 +294,7 @@ def generate_qr_code(request):
     except ValueError:
         return HttpResponse("Invalid price", status=400)
 
-    upi_id = "your.upi.id@upi"
+    upi_id = "9427680319@axl"
     payment_data = f"upi://pay?pa={upi_id}&pn=Inferno%20Motors&am={price}&tn=Car%20Parts%20Purchase&cu=INR"
 
     qr = qrcode.QRCode(

@@ -32,7 +32,7 @@ SERVER_EMAIL = 'server@inferno-motors.com'  # For error notifications
 SECRET_KEY = 'django-insecure-0746@skdm3_jo%4-m1gh8vubyt%(+d!d)qx=-@+#lg=o2jqraf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True    
 
 ALLOWED_HOSTS = ['inferno-motors007.onrender.com','127.0.0.1','localhost',]
 
@@ -123,10 +123,19 @@ WSGI_APPLICATION = 'car_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'inferno_db',
+        'USER': 'harsh',
+        'PASSWORD': 'Harsh@9427',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
+
+
 
 
 # Password validation

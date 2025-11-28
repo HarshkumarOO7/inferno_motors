@@ -1,109 +1,69 @@
-// ----------------------------
-// Card Flip & Form Helpers
-// ----------------------------
+// login.js
+// Handles flipping the card between Login and Signup.
+// Also uses progressive enhancement: links are real anchors, JS enhances by flipping instead of navigating.
 
-/**
- * Safe query helper (returns element or null)
- */
-const $ = (sel) => document.getElementById(sel) || document.querySelector(sel);
+document.addEventListener('DOMContentLoaded', function () {
+    const flipToSignup = document.getElementById('flipToSignup');
+    const flipToLogin = document.getElementById('flipToLogin');
+    const card = document.getElementById('card');
+    const cardFront = document.getElementById('cardFront');
+    const cardBack = document.getElementById('cardBack');
 
-/**
- * Add event listener only when element exists
- */
-function on(el, evt, fn) {
-  if (!el) return;
-  el.addEventListener(evt, fn);
-}
+    // Helper: apply ARIA and classes for visible side
+    function showSignup() {
+        card.classList.add('flipped');
+        cardFront.setAttribute('aria-hidden', 'true');
+        cardBack.setAttribute('aria-hidden', 'false');
+    }
+    function showLogin() {
+        card.classList.remove('flipped');
+        cardFront.setAttribute('aria-hidden', 'false');
+        cardBack.setAttribute('aria-hidden', 'true');
+    }
 
-/**
- * Toggle flipped class on the card
- */
-const card = $('#card');
-function setFlipped(on) {
-  if (!card) return;
-  card.classList.toggle('flipped', !!on);
-}
+    // If elements exist, prevent default anchor behavior and flip instead
+    if (flipToSignup) {
+        flipToSignup.addEventListener('click', function (e) {
+            // If link points to actual signup page but we want to flip,
+            // prevent navigation and flip the card.
+            e.preventDefault();
+            showSignup();
+            // optionally update browser history (so back button returns to login)
+            if (history && history.pushState) {
+                history.pushState({ authCard: 'signup' }, '', '#signup');
+            }
+        });
+    }
 
-/**
- * Simple loading state for a button (adds disabled + data-loading attribute)
- */
-function setButtonLoading(btn, loading = true) {
-  if (!btn) return;
-  btn.disabled = loading;
-  if (loading) {
-    btn.dataset.loading = 'true';
-    // store original text so we can restore
-    if (!btn.dataset.origText) btn.dataset.origText = btn.innerHTML;
-    btn.innerHTML = 'Please wait…';
-    btn.classList.add('loading');
-  } else {
-    btn.disabled = false;
-    btn.classList.remove('loading');
-    btn.innerHTML = btn.dataset.origText || btn.innerHTML;
-  }
-}
+    if (flipToLogin) {
+        flipToLogin.addEventListener('click', function (e) {
+            e.preventDefault();
+            showLogin();
+            if (history && history.pushState) {
+                history.pushState({ authCard: 'login' }, '', '#login');
+            }
+        });
+    }
 
-// ----------------------------
-// Flip controls (guarded)
-// ----------------------------
-on($('#flipToSignup'), (e) => { e.preventDefault(); setFlipped(true); });
-on($('#flipToLogin'),  (e) => { e.preventDefault(); setFlipped(false); });
+    // Respect hash on load: if user opened page with #signup, show signup
+    if (window.location.hash === '#signup') {
+        showSignup();
+    } else if (window.location.hash === '#login') {
+        showLogin();
+    }
 
-// nav-flip ids might not exist — check selectors (support both id and nav links)
-on($('#flipToSignupNav'), (e) => { e.preventDefault(); setFlipped(true); });
-on($('#flipToLoginNav'),  (e) => { e.preventDefault(); setFlipped(false); });
+    // Handle popstate (back/forward navigation)
+    window.addEventListener('popstate', function (ev) {
+        try {
+            if (ev.state && ev.state.authCard === 'signup') showSignup();
+            else showLogin();
+        } catch (e) { /* ignore */ }
+    });
 
-// Allow using anchor links like ".flip-to-signup" if you used classes instead
-document.querySelectorAll('.flip-to-signup').forEach(el => on(el, 'click', (e) => { e.preventDefault(); setFlipped(true); }));
-document.querySelectorAll('.flip-to-login').forEach(el => on(el, 'click', (e) => { e.preventDefault(); setFlipped(false); }));
-
-// Close the card with Escape key
-on(document, 'keyup', (e) => {
-  if (e.key === 'Escape') setFlipped(false);
-});
-
-// ----------------------------
-// Form Submission Logic — keep normal submit (no AJAX here)
-// ----------------------------
-
-const loginForm = $('#loginForm');
-const signupForm = $('#signupForm');
-
-function attachFormSubmit(form) {
-  if (!form) return;
-
-  // find submit button(s) inside the form
-  const submitButtons = Array.from(form.querySelectorAll('[type="submit"]'));
-  const primaryBtn = submitButtons[0] || null;
-
-  // on submit: disable the button to prevent accidental double-clicks and let the browser submit
-  on(form, 'submit', (evt) => {
-    // basic client-side validation hint: if HTML required attributes fail, the browser will block submit
-    // here we only guard double submit and provide feedback
-    if (primaryBtn) setButtonLoading(primaryBtn, true);
-
-    // NOTE: do NOT call evt.preventDefault(); we want the browser to perform the normal POST so Django can
-    // validate CSRF token and handle the request server-side.
-    // If you later implement AJAX, add proper CSRF token handling (see Django docs).
-  });
-
-  // Re-enable button if user leaves the page or form is reset
-  on(form, 'reset', () => { if (primaryBtn) setButtonLoading(primaryBtn, false); });
-  // In case user navigates back and the button stayed disabled, also try to re-enable on focus
-  if (primaryBtn) {
-    on(primaryBtn, 'focus', () => setButtonLoading(primaryBtn, false));
-  }
-}
-
-attachFormSubmit(loginForm);
-attachFormSubmit(signupForm);
-
-// ----------------------------
-// Optional: small accessibility improvement
-// ----------------------------
-document.querySelectorAll('input[required]').forEach(inp => {
-  inp.addEventListener('invalid', () => {
-    // bring focus to the first invalid field
-    inp.focus();
-  }, { once: true });
+    // Accessibility: keyboard toggle (optional)
+    document.addEventListener('keydown', function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') { // ctrl/cmd+k to toggle
+            if (card.classList.contains('flipped')) showLogin(); else showSignup();
+        }
+    });
 });
