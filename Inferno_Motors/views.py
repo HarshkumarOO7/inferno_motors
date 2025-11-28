@@ -18,7 +18,8 @@ from django.db import transaction
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator
 from .forms import PurchaseRequestForm
-from django.db.models import Q
+# from django.db.models import Q
+from django.contrib.auth import authenticate, login as auth_login
 
 User = get_user_model()
 
@@ -49,13 +50,18 @@ def car_copnany(request):
 
 
 def login_view(request):
-    # note: named login_view to avoid shadowing django.contrib.auth.login
     if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        # Read raw POST values (strip whitespace)
+        email = (request.POST.get('email') or '').strip()
+        password = (request.POST.get('password') or '').strip()
+
+        # Debug logs (remove in production)
+        print("LOGIN_POST:", {"email": email, "password_provided": bool(password)})
 
         user = authenticate(request, email=email, password=password)
-        if user:
+        print("AUTH RESULT:", user)  # will print user object (or None)
+
+        if user is not None:
             auth_login(request, user)
             request.session['name'] = user.name
             request.session['email'] = user.email
@@ -67,7 +73,6 @@ def login_view(request):
             return redirect('login')
 
     return render(request, 'login.html')
-
 
 def signup(request):
     if request.method == 'POST':
@@ -117,7 +122,7 @@ def signup(request):
         messages.success(request, "Your account has been created successfully.")
         return redirect('home')
 
-    return render(request, 'signup.html')
+    return render(request, 'login.html')
 
 
 def signout(request):

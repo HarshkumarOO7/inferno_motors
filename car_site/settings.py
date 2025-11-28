@@ -59,9 +59,11 @@ AUTH_USER_MODEL = 'Inferno_Motors.userdetails'
 
 SITE_ID = 1
 
+# authentication backends — make sure your backend path is correct and **first**
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "Inferno_Motors.auth_backends.EmailBackend",            # your EmailBackend
+    "allauth.account.auth_backends.AuthenticationBackend",  # if you use allauth
+    "django.contrib.auth.backends.ModelBackend",            # fallback
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -106,6 +108,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.csrf',
             ],
         },
     },
@@ -182,3 +185,26 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# DEBUG logging for DB queries — temporary for debugging only
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+    },
+    "loggers": {
+        # show SQL queries
+        "django.db.backends": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+        },
+        # show Django stack traces from views/admin
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": True,
+        },
+    },
+}
